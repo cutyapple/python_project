@@ -12,7 +12,7 @@ remainB = 0
 remainW = 0
 
 chessWidth =  ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-chessHeight = ['１', '２', '３', '４', '５', '６', '７', '８']
+chessHeight = ['８', '７', '６', '５', '４', '３', '２', '１', '8', '7', '6', '5', '4', '3', '2', '1']
 whitePieces = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']
 blackPieces = ['♖', '♘', '♗', '♔', '♕', '♗', '♘', '♖', '♙']
 chessTable = [
@@ -46,7 +46,7 @@ def setTable():
 def printTable():
     for i in range(0, 10):
         for j in range(0, 10):
-            print(chessTable[i][j], end=' ')
+            print(chessTable[i][j], end='')
 
         print('')
 
@@ -57,18 +57,77 @@ def turnStart(turn):
     y = y.strip()
     print(f'x : {x}')
     print(f'y : {y}')
+    check(chessWidth, chessHeight, x, y)
+
+def check(piecesXList, piecesYList, x, y):
+    xIndex = None
+    yIndex = None
+    for i in piecesXList:
+        if x == i :
+            xIndex = piecesXList.index(i) - 7
+
+    for i in piecesYList:
+        if y == i:
+            yIndex = piecesYList.index(i) - 7
+
+    print(f'xIndex : {xIndex}, yIndex : {yIndex}')
+
+    if xIndex != None and yIndex != None:
+        if chessTable[xIndex][yIndex] == '　' :
+            print('There is no one')
+        else :
+            print(chessTable[xIndex][yIndex])
 
 def chess():
     setTable()
 
-class piece():
-    def move(self, x, y):
+class piece:
+    direction = []          #moveable direction
+    distance = 0            #moveable distance
+    aDis = 0                #auxiliary distance
+
+    def move(self, x, y):   #piece's moving
         print(x, y)
-    def die(self):
+
+    def die(self):          #piece's dying
         print('die')
-    def sel(self):
+
+    def sel(self):          #piece's selecting
         print(self)
 
+class King(piece):
+    def __init__(self):
+        self.distance = 1
+        self.direction = [1, 2, 3, 4, 6, 7, 8, 9]
+        self.moved = False  #castling
+
+class Queen(piece):
+    def __init__(self):
+        self.distance = 7
+        self.direction = [1, 2, 3, 4, 6, 7, 8, 9]
+
+class Bishop(piece):
+    def __init__(self):
+        self.distance = 7
+        self.direction = [1, 3, 7, 9]
+
+class Knight(piece):
+    def __init__(self):
+        self.distance = 2
+        self.direction = [1, 3, 7, 9]
+        self.aDis = 1
+
+class Rook(piece):
+    def __init__(self):
+        self.distance = 7
+        self.direction = [2, 4, 6, 8]
+        self.moved = False  #castling
+
+class Pawn(piece):
+    def __init__(self):
+        self.distance = 1
+        self.direction = [8]
+        self.aDis = 1
 
 ###########################################################
 # Below this line is the 『main function』.
