@@ -2,56 +2,78 @@
 # The white(bottom) is upper and the black(top) is lower
 # King, Queen, Bishop, Knight, Rook, Pawn
 # Each block has some piece or NULL
+# turn True's means Black's turn and turn False's means White's turn
+# remainB and remainW mean their remaining pieces
 
+###########################################################
+# variables' Space
+turn = True
+remainB = 0
+remainW = 0
+
+chessWidth =  ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+chessHeight = ['１', '２', '３', '４', '５', '６', '７', '８']
+whitePieces = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']
+blackPieces = ['♖', '♘', '♗', '♔', '♕', '♗', '♘', '♖', '♙']
 chessTable = [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0]
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', '', '', ''],
 ]
 
 def setTable():
-    for i in range(0, 8):
-        chessTable[0][0] = '♜'
-        chessTable[0][1] = '♞'
-        chessTable[0][2] = '♝'
-        chessTable[0][3] = '♛'
-        chessTable[0][4] = '♚'
-        chessTable[0][5] = '♝'
-        chessTable[0][6] = '♞'
-        chessTable[0][7] = '♜'
-        chessTable[1][i] = '♟'
+    for i in range(0, 10):
+        for j in range(0, 10):
+            chessTable[i][j] = '　'
 
-        chessTable[7][0] = '♖'
-        chessTable[7][1] = '♘'
-        chessTable[7][2] = '♗'
-        chessTable[7][3] = '♔'
-        chessTable[7][4] = '♕'
-        chessTable[7][5] = '♗'
-        chessTable[7][6] = '♘'
-        chessTable[7][7] = '♖'
-        chessTable[6][i] = '♙'
+    for i in range(1, 9):
+        chessTable[0][i] = chessWidth[i-1]
+        chessTable[1][i] = blackPieces[i-1]
+        chessTable[2][i] = blackPieces[8]
+        chessTable[7][i] = whitePieces[8]
+        chessTable[8][i] = whitePieces[i-1]
+        chessTable[9][i] = chessWidth[i-1]
+        chessTable[i][0] = chessHeight[i-1]
+        chessTable[i][9] = chessHeight[i-1]
 
 def printTable():
-    for i in range(0, 8):
-        for j in range(0, 8):
+    for i in range(0, 10):
+        for j in range(0, 10):
             print(chessTable[i][j], end=' ')
+
         print('')
+
+def turnStart(turn):
+    coor = input('select your piece : ')
+    x, y = coor.strip().split(',')
+    x = x.strip()
+    y = y.strip()
+    print(f'x : {x}')
+    print(f'y : {y}')
 
 def chess():
     setTable()
+
+class piece():
+    def move(self, x, y):
+        print(x, y)
+    def die(self):
+        print('die')
+    def sel(self):
+        print(self)
 
 
 ###########################################################
 # Below this line is the 『main function』.
 
 chess()
-
 printTable()
 
-if('  ' == '  '):
-    print(1)
+turnStart(True)
