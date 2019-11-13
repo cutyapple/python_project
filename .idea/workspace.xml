@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d7fe982-7ec6-46b9-b9cf-c5e088be62cd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Chess.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chess.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/practice.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/question.txt" beforeDir="false" afterPath="$PROJECT_DIR$/question.txt" afterDir="false" />
@@ -17,14 +18,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Chess.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="137" column="15" lean-forward="true" selection-start-line="137" selection-start-column="15" selection-end-line="137" selection-end-column="15" />
+            <state relative-caret-position="1695">
+              <caret line="216" column="32" selection-start-line="216" selection-start-column="32" selection-end-line="216" selection-end-column="32" />
               <folding>
                 <element signature="e#578#1052#0" />
-                <element signature="e#1068#1347#0" />
+                <element signature="e#1455#1794#0" />
                 <element signature="e#934#1048#0" />
+                <element signature="e#1852#2015#0" />
                 <element signature="e#1166#1176#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/practice.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="48">
+              <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -90,7 +101,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.practice">
+  <component name="RunManager" selected="Python.Chess">
     <configuration name="Chess" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Chess" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -135,8 +146,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.practice" />
         <item itemvalue="Python.Chess" />
+        <item itemvalue="Python.practice" />
       </list>
     </recent_temporary>
   </component>
@@ -169,8 +180,8 @@
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24983476" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" order="0" />
-      <window_info anchor="bottom" id="Python Console" order="1" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.32885906" />
+      <window_info anchor="bottom" id="Python Console" order="1" weight="0.32885906" />
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.32885906" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -178,7 +189,7 @@
       <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="Run" order="9" visible="true" weight="0.35302013" />
+      <window_info active="true" anchor="bottom" id="Run" order="9" visible="true" weight="0.26845637" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.32885906" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -197,16 +208,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/practice.py">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Chess.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="137" column="15" lean-forward="true" selection-start-line="137" selection-start-column="15" selection-end-line="137" selection-end-column="15" />
+        <state relative-caret-position="1695">
+          <caret line="216" column="32" selection-start-line="216" selection-start-column="32" selection-end-line="216" selection-end-column="32" />
           <folding>
             <element signature="e#578#1052#0" />
-            <element signature="e#1068#1347#0" />
+            <element signature="e#1455#1794#0" />
             <element signature="e#934#1048#0" />
+            <element signature="e#1852#2015#0" />
             <element signature="e#1166#1176#0" />
           </folding>
         </state>
