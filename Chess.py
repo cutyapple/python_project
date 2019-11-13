@@ -7,6 +7,27 @@
 # Table is filled with black and white color
 # Castling, En passant, promotion, check, checkmate, touch-move, stalemate
 
+
+
+
+
+
+
+
+
+
+
+#       This Project is previos version
+
+
+
+
+
+
+
+
+
+
 import os
 
 ###########################################################
