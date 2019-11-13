@@ -6,6 +6,9 @@
 # remainB and remainW mean their remaining pieces
 # Table is filled with black and white color
 # Castling, En passant, promotion, check, checkmate, touch-move, stalemate
+
+import os
+
 ###########################################################
 # variables' Space
 turn = True
@@ -15,7 +18,7 @@ remain_w = 0
 chess_width =  ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 chess_height = ['８', '７', '６', '５', '４', '３', '２', '１', 8, 7, 6, 5, 4, 3, 2, 1]
 white_pieces = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']
-black_pieces = ['♖', '♘', '♗', '♔', '♕', '♗', '♘', '♖', '♙']
+black_pieces = ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖', '♙']
 chess_table = [
     ['', '', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', '', ''],
@@ -28,6 +31,10 @@ chess_table = [
     ['', '', '', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', '', '', ''],
 ]
+
+
+def cls():
+    print('\n'*50)
 
 
 def table_to_code(table_x, table_y):    # table's coor change to array's coor
@@ -86,6 +93,7 @@ def turn_start(turn):
     x, y = coor.strip().split(',')
     x = x.strip()
     y = y.strip()
+    y = int(y)
     print(f'x : {x}')
     print(f'y : {y}')
     check(chess_width, chess_height, x, y)
@@ -94,6 +102,9 @@ def turn_start(turn):
 def check(pieces_x_list, pieces_y_list, x, y):
     x_index = None
     y_index = None
+
+    print(chess_table[4][1])
+
     for i in pieces_x_list:
         if x == i:
             x_index = pieces_x_list.index(i) - 7
@@ -105,12 +116,12 @@ def check(pieces_x_list, pieces_y_list, x, y):
     print(f'xIndex : {x_index}, yIndex : {y_index}')
 
     if x_index != None and y_index != None:
-        if chess_table[x_index][y_index] == '　':
+        if chess_table[y_index][x_index] == '　':
             print('There is no one')
         else :
-            print(chess_table[x_index][y_index])
+            print(chess_table[y_index][x_index])
             for piece in piece_list:
-                if piece.location == [x, y]:
+                if piece.location == [y, x]:
                     print(f'x : {x}, y : {y}')
 
 
@@ -150,6 +161,8 @@ class King(Piece):
         self.moved = False  #castling
         self.name = name
         self.symbol = symbol
+
+        print(f'{self.symbol} : {self.location}')
 
 
 class Queen(Piece):
@@ -212,9 +225,9 @@ print_table()
 bRookA = Rook('a', 8, 'bRookA', '♖')
 bKnightA = Knight('b', 8, 'bKnightA', '♘')
 bBishopA = Bishop('c', 8, 'bBishopA', '♗')
-bQueen = Queen('d', 8, 'bQueen', '♔')
-bKing = King('e', 8, 'bKing', '♕')
-bBishpB = Bishop('f', 8, 'bBishopB', '♗')
+bQueen = Queen('e', 8, 'bQueen', '♔')
+bKing = King('d', 8, 'bKing', '♕')
+bBishopB = Bishop('f', 8, 'bBishopB', '♗')
 bKnightB = Knight('g', 8, 'bKnightB', '♘')
 bRookB = Rook('h', 8, 'bRookB', '♖')
 
@@ -239,22 +252,21 @@ wPawnH = Pawn('h', 2, 'wPawnH', '♟')
 wRookA = Rook('a', 1, 'wRookA', '♜')
 wKnightA = Knight('b', 1, 'wKnightA', '♞')
 wBishopA = Bishop('c', 1, 'wBishopA', '♝')
-wQueen = Queen('d', 1, 'wQueen', '♛')
-wKing = King('e', 1, 'wKing', '♚')
-wBishpB = Bishop('f', 1, 'wBishopB', '♝')
+wQueen = Queen('e', 1, 'wQueen', '♚')
+wKing = King('d', 1, 'wKing', '♛')
+wBishopB = Bishop('f', 1, 'wBishopB', '♝')
 wKnightB = Knight('g', 1, 'wKnightB', '♞')
 wRookB = Rook('h', 1, 'wRookB', '♜')
 
 piece_list = [
-    bRookA, bKnightA, bBishopA, bQueen, bKing, bBishpB, bKnightB, bRookA,
+    bRookA, bKnightA, bBishopA, bQueen, bKing, bBishopB, bKnightB, bRookA,
     bPawnA, bPawnB, bPawnC, bPawnD, bPawnE, bPawnF, bPawnG, bPawnH,
     wPawnA, wPawnB, wPawnC, wPawnD, wPawnE, wPawnF, wPawnG, wPawnH,
-    wRookA, wKnightA, wBishopA, wQueen, wKing, wBishpB, wKnightB, wRookB,
+    wRookA, wKnightA, wBishopA, wQueen, wKing, wBishopB, wKnightB, wRookB,
 ]
 
 turn_start(True)
 
-print(wRookA.location)
+cls()
 
-for i in range(1, 9):
-    code_to_table(1, i)
+print_table()
