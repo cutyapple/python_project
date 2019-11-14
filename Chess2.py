@@ -13,7 +13,7 @@ class Piece:
     name = ''               #piece's unique name
     location = []           #current location (table)
     code_lo = []             #current loocation (code - array)
-    direction = []          #moveable direction
+    direction = [[]]          #moveable direction
     distance = 0            #moveable distance
     au_dis = 0                #auxiliary distance
     is_dying = False         #piece's checking
@@ -35,7 +35,7 @@ class Piece:
 class King(Piece):
     def __init__(self, x, y, name, symbol):
         self.distance = 1
-        self.direction = [1, 2, 3, 4, 6, 7, 8, 9]
+        self.direction = [[-1, 1], [0, 1], [1, 1], [-1, 0], [1, 0], [-1, -1], [0, -1], [1, -1]]
         self.location = [x, y]          #[a, 1]
         self.moved = False  #castling
         self.name = name
@@ -45,7 +45,7 @@ class King(Piece):
 class Queen(Piece):
     def __init__(self, x, y, name, symbol):
         self.distance = 7
-        self.direction = [1, 2, 3, 4, 6, 7, 8, 9]
+        self.direction = [[-1, 1], [0, 1], [1, 1], [-1, 0], [1, 0], [-1, -1], [0, -1], [1, -1]]
         self.location = [x, y]
         self.name = name
         self.symbol = symbol
@@ -54,26 +54,26 @@ class Queen(Piece):
 class Bishop(Piece):
     def __init__(self, x, y, name, symbol):
         self.distance = 7
-        self.direction = [1, 3, 7, 9]
+        self.direction = [[-1, 1], [0, 0], [1, 1], [0, 0], [0, 0], [-1, -1], [0, 0], [1, -1]]
         self.location = [x, y]
         self.name = name
         self.symbol = symbol
 
 
-class Knight(Piece):
-    def __init__(self, x, y, name, symbol):
-        self.distance = 2
-        self.direction = [1, 3, 7, 9]
-        self.location = [x, y]
-        self.au_dis = 1       #special moving
-        self.name = name
-        self.symbol = symbol
+class Knight(Piece):                            #
+    def __init__(self, x, y, name, symbol):     #
+        self.distance = 2                       #
+        self.direction = [1, 3, 7, 9]           #knight should be modify
+        self.location = [x, y]                  #
+        self.au_dis = 1       #special moving   #
+        self.name = name                        #
+        self.symbol = symbol                    #
 
 
 class Rook(Piece):
     def __init__(self, x, y, name, symbol):
         self.distance = 7
-        self.direction = [2, 4, 6, 8]
+        self.direction = [[0, 0], [0, 1], [0, 0], [-1, 0], [1, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
         self.moved = False  #castling
         self.name = name
@@ -83,7 +83,7 @@ class Rook(Piece):
 class Pawn(Piece):
     def __init__(self, x, y, name, symbol):
         self.distance = 1
-        self.direction = [8]
+        self.direction = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
         self.au_dis = 1       #special moving
         self.moved = False  #first moving
@@ -154,6 +154,8 @@ chess_table = [
     ['', '', '', '', '', '', '', '', '', ''],
 ]
 
+table_color = [[]]
+table_color.pop(0)
 
 def cls():
     print('\n'*50)
@@ -211,12 +213,39 @@ def set_table():  # before the start, setting the table
 
 
 def print_table():  # print the current table
-    # print('\n'*50)
+    x_index, y_index = [], []
+    if table_color != []:
+        for i in table_color:
+            x_index.append(i[0])
+            y_index.append(i[1])
+    print(x_index)
+    print(y_index)
+
+    indexes = []
+
+    for i in range(0, int(len(x_index))):
+        indexes.append([x_index[i], y_index[i]])
+
+    print(indexes)
+
     for i in range(0, 10):
         for j in range(0, 10):
-            print(chess_table[i][j], end='')
+                check = True
+                for index in indexes:
+                    if index == [j, i]:
+                        print(f'\x1b[0;0;46m{chess_table[i][j]}\x1b[0m', end='')
+                        check = False
+
+                if check:
+                    if i == 0 or j == 0 or i == 9 or j == 9:
+                        print(f'{chess_table[i][j]}', end='')
+                    elif (j+i) % 2 == 0:
+                        print(f'\x1b[0;0;40m{chess_table[i][j]}\x1b[0m', end='')
+                    else:
+                        print(f'\x1b[0;0;0m{chess_table[i][j]}\x1b[0m', end='')
 
         print('')
+
 
 def inputing(word):
     coor = ''
@@ -287,8 +316,34 @@ def moving(pieces_x_list, pieces_y_list, x, y):
 
                     print(f'Your choice : [{input_x}, {input_y}]')
 
-                    list_x, list_y
+                    find(x, y)
 
+
+def find(input_x, input_y):
+    for piece in piece_list:
+        if piece.location == [input_x, input_y]:
+            direct(piece)
+
+def direct(piece):
+    x, y = piece.location
+    x, y = table_to_code(x, y)
+    x = int(x)
+    y = int(y)
+    for direction in piece.direction:
+        dir_x, dir_y = direction
+        if not dir_x == dir_y == 0:
+            for i in range (0, piece.distance+1):
+                move_x = x + i * dir_x
+                move_y = y + i * dir_y
+
+                if  move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8 :
+                    break
+
+                if i != 0 and chess_table[move_y][move_x] != '　':
+                    break
+                
+                if i != 0 :
+                    table_color.append([move_x, move_y])
 
 def chess():
     set_table()
@@ -308,3 +363,5 @@ print_table()
 
 
 turn_start()
+cls()
+print_table()
