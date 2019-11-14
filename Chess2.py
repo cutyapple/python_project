@@ -213,20 +213,16 @@ def set_table():  # before the start, setting the table
 
 
 def print_table():  # print the current table
-    x_index, y_index = [], []
+    global table_color
+    cls()
+    x_index, y_index, indexes = [], [], []
     if table_color != []:
         for i in table_color:
             x_index.append(i[0])
             y_index.append(i[1])
-    print(x_index)
-    print(y_index)
-
-    indexes = []
 
     for i in range(0, int(len(x_index))):
         indexes.append([x_index[i], y_index[i]])
-
-    print(indexes)
 
     for i in range(0, 10):
         for j in range(0, 10):
@@ -245,6 +241,9 @@ def print_table():  # print the current table
                         print(f'\x1b[0;0;0m{chess_table[i][j]}\x1b[0m', end='')
 
         print('')
+
+    table_color = [[]]
+    table_color.pop()
 
 
 def inputing(word):
@@ -298,6 +297,10 @@ def moving(pieces_x_list, pieces_y_list, x, y):
     x_index, y_index = list_check(x, y)
     y_index = int(y_index)
 
+    find(x, y)
+
+    print_table()
+
     if x_index != None and y_index != None:
         if chess_table[y_index][x_index] == '　':
             print('There is no one')
@@ -310,9 +313,6 @@ def moving(pieces_x_list, pieces_y_list, x, y):
                     input_y = int(input_y)
 
                     list_x, list_y= list_check(input_x, input_y)
-
-                    list_x = int(list_x)
-                    list_y = int(list_y)
 
                     print(f'Your choice : [{input_x}, {input_y}]')
 
@@ -363,5 +363,4 @@ print_table()
 
 
 turn_start()
-cls()
 print_table()
