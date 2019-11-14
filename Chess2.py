@@ -218,61 +218,85 @@ def print_table():  # print the current table
 
         print('')
 
-
-def turn_start(turn):
-    print_table()
+def inputing(word):
     coor = ''
     x = ''
     y = ''
+    error = False
 
-    try:
-        coor = input('select your piece : ')
-        x, y = coor.strip().split(',')
-        x = x.strip()
-        y = y.strip()
+    while(True):
+        try:
+            coor = input(word)
+            x, y = coor.strip().split(',')
+            x = x.strip()
+            y = y.strip()
 
-        y = int(y)
-        if not y in chess_height:
-            y = '+'
-        if not x in chess_width:
-            y = '+'
-        y = int(y)
+            y = int(y)
+            if not y in chess_height:
+                y = '+'
+            if not x in chess_width:
+                y = '+'
+            y = int(y)
+            error = True
+            if error == True:
+                break
+        except ValueError:
+            print(f'ERROR : wrong input.')
+            error = False
 
-    except ValueError:
-        print(f'ERROR : wrong input.')
-        turn_start(True)
-        return None
-
-    check(chess_width, chess_height, x, y)
+    return [x, y]
 
 
-def check(pieces_x_list, pieces_y_list, x, y):
+def list_check(x, y):
+    x_index = ''
+    y_index = ''
+    for i in chess_width:
+        if x == i:
+            x_index = chess_width.index(i) - 7
+
+    for i in chess_height:
+        if y == i:
+            y_index = chess_height.index(i) - 7
+
+    return [x_index, y_index]
+
+
+def moving(pieces_x_list, pieces_y_list, x, y):
     x_index = None
     y_index = None
     y = int(y)
 
-    for i in pieces_x_list:
-        if x == i:
-            x_index = pieces_x_list.index(i) - 7
-
-    for i in pieces_y_list:
-        if y == i:
-            y_index = pieces_y_list.index(i) - 7
+    x_index, y_index = list_check(x, y)
+    y_index = int(y_index)
 
     if x_index != None and y_index != None:
         if chess_table[y_index][x_index] == '　':
             print('There is no one')
+            turn_start()
         else:
-            print(chess_table[y_index][x_index])
             for piece in piece_list:
                 if piece.location == [x, y]:
-                    print(f'Your choice : [{x}, {y}]')
+                    print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
+                    input_x, input_y = inputing('select the coordinates : ')
+                    input_y = int(input_y)
 
+                    list_x, list_y= list_check(input_x, input_y)
+
+                    list_x = int(list_x)
+                    list_y = int(list_y)
+
+                    print(f'Your choice : [{input_x}, {input_y}]')
+
+                    list_x, list_y
 
 
 def chess():
     set_table()
 
+
+def turn_start():
+    input_x, input_y = inputing('select your piece : ')
+    moving(chess_width, chess_height, input_x, input_y)
 
 ###########################################################
 # Below this line is the 『main function』.
@@ -283,4 +307,4 @@ print_table()
 # 너무 하드코딩 아닌가?
 
 
-turn_start(True)
+turn_start()
