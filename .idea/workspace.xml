@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8d7fe982-7ec6-46b9-b9cf-c5e088be62cd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Chess2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chess2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/question.txt" beforeDir="false" afterPath="$PROJECT_DIR$/question.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Chess2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="326" lean-forward="true" selection-start-line="326" selection-end-line="326" />
+            <state relative-caret-position="164">
+              <caret line="321" lean-forward="true" selection-start-line="321" selection-end-line="321" />
             </state>
           </provider>
         </entry>
@@ -52,6 +53,7 @@
     <findStrings>
       <find>♕</find>
       <find>bRookB</find>
+      <find>pop</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -229,7 +231,7 @@
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" anchor="top" x="0" y="23" width="1536" height="841" id="Run" maximized="true" order="0" type="WINDOWED" visible="true" weight="0.43074793" />
+      <window_info anchor="top" x="916" y="162" width="590" height="575" id="Run" maximized="true" order="0" type="WINDOWED" weight="0.43074793" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24983476" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -239,7 +241,7 @@
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.39889196" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="9" weight="0.32885906" />
@@ -276,8 +278,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Chess2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="326" lean-forward="true" selection-start-line="326" selection-end-line="326" />
+        <state relative-caret-position="164">
+          <caret line="321" lean-forward="true" selection-start-line="321" selection-end-line="321" />
         </state>
       </provider>
     </entry>

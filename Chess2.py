@@ -17,6 +17,7 @@ class Piece:
     distance = 0            #moveable distance
     au_dis = 0                #auxiliary distance
     is_dying = False         #piece's checking
+    moved = True
 
     def move(self, x, y):   #piece's moving
         print(x, y)
@@ -86,9 +87,10 @@ class Pawn(Piece):
         self.direction = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
         self.au_dis = 1       #special moving
-        self.moved = False  #first moving
+        self.moved = False    #first moving
         self.name = name
         self.symbol = symbol
+
 
 bRookA = Rook('a', 8, 'bRookA', '♖')
 bKnightA = Knight('b', 8, 'bKnightA', '♘')
@@ -139,7 +141,7 @@ turn = True
 remain_b = 0
 remain_w = 0
 
-chess_width =  ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+chess_width = ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 chess_height = ['８', '７', '６', '５', '４', '３', '２', '１', 8, 7, 6, 5, 4, 3, 2, 1]
 chess_table = [
     ['', '', '', '', '', '', '', '', '', ''],
@@ -156,6 +158,7 @@ chess_table = [
 
 table_color = [[]]
 table_color.pop(0)
+
 
 def cls():
     print('\n'*50)
@@ -180,17 +183,16 @@ def code_to_table(array_x, array_y):  # array's coor change to table's coor
     table_x = chess_width[array_x + 7]
     table_y = chess_height[array_y + 7]
 
-    print(f'[{table_x}, {table_y}]')
-
     return [table_x, table_y]
 
 
 def re_table():   # table modify
     for piece in piece_list:
         x, y = piece.location
+        # if not piece.name == 'wPawnA':
         code_list = table_to_code(x, y)
         code_x, code_y = code_list
-        print(f'{piece.symbol} : {piece.name} :  x = {code_x}, y = {code_y}')
+        # print(f'{piece.symbol} : {piece.name} :  cx = {code_x}, cy = {code_y}, x = {x}, y = {y}')
         chess_table[code_y][code_x] = piece.symbol
 
 
@@ -212,8 +214,7 @@ def set_table():  # before the start, setting the table
         chess_table[code_y][code_x] = piece.symbol
 
 
-def print_table():  # print the current table
-    global table_color
+def print_table(table_color):  # print the current table
     cls()
     x_index, y_index, indexes = [], [], []
     if table_color != []:
@@ -241,16 +242,12 @@ def print_table():  # print the current table
                         print(f'\x1b[0;0;0m{chess_table[i][j]}\x1b[0m', end='')
 
         print('')
-
-    table_color = [[]]
-    table_color.pop()
+    # print(table_color)
 
 
 def inputing(word):
-    coor = ''
     x = ''
     y = ''
-    error = False
 
     while(True):
         try:
@@ -260,17 +257,15 @@ def inputing(word):
             y = y.strip()
 
             y = int(y)
-            if not y in chess_height:
+            if not (y in chess_height):
                 y = '+'
-            if not x in chess_width:
+            if not (x in chess_width):
                 y = '+'
             y = int(y)
-            error = True
-            if error == True:
-                break
+            break
+
         except ValueError:
             print(f'ERROR : wrong input.')
-            error = False
 
     return [x, y]
 
@@ -289,9 +284,7 @@ def list_check(x, y):
     return [x_index, y_index]
 
 
-def moving(pieces_x_list, pieces_y_list, x, y):
-    x_index = None
-    y_index = None
+def moving(x, y):
     y = int(y)
 
     x_index, y_index = list_check(x, y)
@@ -299,24 +292,19 @@ def moving(pieces_x_list, pieces_y_list, x, y):
 
     find(x, y)
 
-    print_table()
+    if chess_table[y_index][x_index] == '　':
+        print('There is no one')
+        turn_start()
+    else:
+        for piece in piece_list:
+            if piece.location == [x, y]:
+                print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
+                input_x, input_y = inputing('select the coordinates : ')
+                input_y = int(input_y)
 
-    if x_index != None and y_index != None:
-        if chess_table[y_index][x_index] == '　':
-            print('There is no one')
-            turn_start()
-        else:
-            for piece in piece_list:
-                if piece.location == [x, y]:
-                    print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
-                    input_x, input_y = inputing('select the coordinates : ')
-                    input_y = int(input_y)
+                print(f'Your choice : [{input_x}, {input_y}]')
 
-                    list_x, list_y= list_check(input_x, input_y)
-
-                    print(f'Your choice : [{input_x}, {input_y}]')
-
-                    find(x, y)
+                move(input_x, input_y, piece)
 
 
 def find(input_x, input_y):
@@ -324,7 +312,14 @@ def find(input_x, input_y):
         if piece.location == [input_x, input_y]:
             direct(piece)
 
+
+checking_num = 0
+
+
 def direct(piece):
+    for i in table_color:
+        j = table_color.pop()
+
     x, y = piece.location
     x, y = table_to_code(x, y)
     x = int(x)
@@ -332,35 +327,72 @@ def direct(piece):
     for direction in piece.direction:
         dir_x, dir_y = direction
         if not dir_x == dir_y == 0:
-            for i in range (0, piece.distance+1):
+            for i in range(0, piece.distance+1):
                 move_x = x + i * dir_x
                 move_y = y + i * dir_y
 
-                if  move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8 :
+                if move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8:
                     break
 
                 if i != 0 and chess_table[move_y][move_x] != '　':
                     break
                 
-                if i != 0 :
+                if i != 0:
+                    if 'Pawn' in piece.name:
+                        if not piece.moved:
+                            table_color.append([move_x, move_y])
+                            table_color.append([move_x, (move_y-1)])
+                            piece.moved = True
+                            break
+                    elif 'Knight' in piece.name:
+                        table_color.append([move_x, move_y])
+
                     table_color.append([move_x, move_y])
+    print("tc", table_color)
+    print_table(table_color)
+
+    
+def move(x, y, piece):
+    x, y = table_to_code(x, y)
+    pre_x, pre_y = piece.location
+    pre_x, pre_y = table_to_code(pre_x, pre_y)
+
+    pre_x = int(pre_x)
+    pre_y = int(pre_y)
+    chess_table[pre_y][pre_x] = '　'
+
+    for color_coor in table_color:
+        coor_x, coor_y = color_coor
+        if x == coor_x and y == coor_y:
+            print(f'[{x}, {y}] : OK')
+            x, y = code_to_table(x, y)
+            piece.location = [x, y]
+
+    for i in range(0, len(table_color)):
+        table_color.pop()
+
+    re_table()
+    print_table(table_color)
+
 
 def chess():
     set_table()
+    print_table(table_color)
 
 
 def turn_start():
     input_x, input_y = inputing('select your piece : ')
-    moving(chess_width, chess_height, input_x, input_y)
+    moving(input_x, input_y)
 
 ###########################################################
 # Below this line is the 『main function』.
 
+
 chess()
-print_table()
 
 # 너무 하드코딩 아닌가?
 
 
 turn_start()
-print_table()
+turn_start()
+turn_start()
