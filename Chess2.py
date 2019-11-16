@@ -20,18 +20,12 @@ class Piece:
     moved = True            #piece's moving check
     team = ''               #piece's team
 
-    def move(self, x, y):   #piece's moving
-        print(x, y)
-
     def die(self):          #piece's dying
-        print('die')
+        if self.team:
+            print(f'White team\'s King dead!')
+            print(f'Black team win!')
+            game_end = True
         self.is_dying = True
-
-    def select(self):       #piece's selecting
-        print(self)
-
-    def checking(self):     #available check checking
-        print(self)
 
 
 class King(Piece):
@@ -98,6 +92,8 @@ class Pawn(Piece):
         self.symbol = symbol
         self.team = team
 
+
+game_end = False
 
 wPawnDir = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, -1], [0, 0]]
 bPawnDir = [[0, 0], [0, 1], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
@@ -199,11 +195,11 @@ def code_to_table(array_x, array_y):  # array's coor change to table's coor
 def re_table():   # table modify
     for piece in piece_list:
         x, y = piece.location
-        # if not piece.name == 'wPawnA':
-        code_list = table_to_code(x, y)
-        code_x, code_y = code_list
-        # print(f'{piece.symbol} : {piece.name} :  cx = {code_x}, cy = {code_y}, x = {x}, y = {y}')
-        chess_table[code_y][code_x] = piece.symbol
+
+        if not x == y == -1:
+            code_list = table_to_code(x, y)
+            code_x, code_y = code_list
+            chess_table[code_y][code_x] = piece.symbol
 
 
 def set_table():  # before the start, setting the table
@@ -240,7 +236,10 @@ def print_table(table_color):  # print the current table
 
     indexes = table_color_set(table_color)
 
-    print(indexes)
+    if turn:
+        print('Black team\'s turn')
+    else:
+        print('White team\'s turn')
 
     for i in range(0, 10):
         for j in range(0, 10):
@@ -296,27 +295,12 @@ def inputing(word):
     return [x, y]
 
 
-def list_check(x, y):
-    x_index = ''
-    y_index = ''
-    for i in chess_width:
-        if x == i:
-            x_index = chess_width.index(i) - 7
-
-    for i in chess_height:
-        if y == i:
-            y_index = chess_height.index(i) - 7
-
-    return [x_index, y_index]
-
-
-def moving(x, y):
+def selecting(x, y):
     y = int(y)
-    input_x, input_y = '', ''
-    x_index, y_index = list_check(x, y)
+    x_index, y_index = table_to_code(x, y)
     y_index = int(y_index)
 
-    direct(find(x, y))
+    color_add(find_piece(x, y))
 
     indexes = table_color_set(table_color)
 
@@ -328,7 +312,7 @@ def moving(x, y):
         print_table(table_color)
         print('It can\'t move there')
         turn_start()
-    elif find(x, y).team != turn:
+    elif find_piece(x, y).team != turn:
         color_del()
         print_table(table_color)
         print('It isn\'t your team')
@@ -352,13 +336,10 @@ def moving(x, y):
                 move(input_x, input_y, piece)
 
 
-def find(input_x, input_y):
+def find_piece(input_x, input_y):
     for piece in piece_list:
         if piece.location == [input_x, input_y]:
             return piece
-
-
-checking_num = 0
 
 
 # table_color에 들어있는 쓰레기 값 제거
@@ -367,11 +348,10 @@ def color_del():
         table_color.pop()
 
 
-def direct(piece):
+def color_add(piece):
     color_del()
 
     if piece == None:
-        print('return')
         return
 
     x, y = piece.location
@@ -386,6 +366,7 @@ def direct(piece):
                 move_x = x + i * dir_x
                 move_y = y + i * dir_y
 
+                #Is it a Knight?
                 if 'Knight' in piece.name:
                     ys = [-1, 1, -2, 2, -2, 2, -1, 1]
                     xs = [-2, -2, -1, -1, 1, 1, 2, 2]
@@ -399,7 +380,7 @@ def direct(piece):
 
                         if check:
                             move_c_x, move_c_y = code_to_table(move_x, move_y)
-                            move_piece = find(move_c_x, move_c_y)
+                            move_piece = find_piece(move_c_x, move_c_y)
                             if move_piece != None:
                                 if move_piece.team == turn:
                                     check = False
@@ -408,7 +389,6 @@ def direct(piece):
                             if check:
                                 if not [move_x, move_y] in table_color:
                                     table_color.append([move_x, move_y])
-                                    print('c',[move_x, move_y])
                                     check = False
                     check = False
 
@@ -417,6 +397,34 @@ def direct(piece):
                     # Is there the wall?
                     if move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8:
                         break
+
+                    # Is it a Pawn?
+                    if 'Pawn' in piece.name:
+                        sub = 0
+                        if not piece.team:
+                            sub = -1
+                        else:
+                            sub = 1
+
+                        for i in range(-1, 2):
+                            table_x, table_y = code_to_table(move_x + i, move_y + sub)
+                            pawn_someone = find_piece(table_x, table_y)
+
+                            if i == 0 and pawn_someone != None:
+                                continue
+
+                            if i != 0 and pawn_someone == None:
+                                continue
+                            elif i != 0 and pawn_someone != None:
+                                if pawn_someone.team == piece.team:
+                                    continue
+
+                            table_color.append([move_x + i, move_y + sub])
+
+                        if not piece.moved:
+                            table_color.append([move_x, (move_y + sub * 2)])
+                            piece.moved = True
+                            break
 
                     # Is there something?
                     if i != 0 and chess_table[move_y][move_x] != '　':
@@ -429,26 +437,11 @@ def direct(piece):
                         break
 
                     if i != 0:
-                        if 'Pawn' in piece.name:
-                            if piece.team == False:
-                                if not piece.moved:
-                                    table_color.append([move_x, move_y])
-                                    table_color.append([move_x, (move_y-1)])
-                                    piece.moved = True
-                                    break
-                            else:
-                                print(f'pn : {piece.name}')
-                                if not piece.moved:
-                                    table_color.append([move_x, move_y])
-                                    table_color.append([move_x, (move_y+1)])
-                                    piece.moved = True
-                                    break
                         table_color.append([move_x, move_y])
     print_table(table_color)
 
     
 def move(x, y, piece):
-    x, y = table_to_code(x, y)
     pre_x, pre_y = piece.location
     pre_x, pre_y = table_to_code(pre_x, pre_y)
 
@@ -456,10 +449,19 @@ def move(x, y, piece):
     pre_y = int(pre_y)
     chess_table[pre_y][pre_x] = '　'
 
+    attaked_piece = find_piece(x, y)
+
+    if attaked_piece != None:
+        attaked_piece.location = [-1, -1]
+        attaked_piece.is_dying = True
+        if 'King' in attaked_piece.name:
+            attaked_piece.die()
+
+    x, y = table_to_code(x, y)
+
     for color_coor in table_color:
         coor_x, coor_y = color_coor
         if x == coor_x and y == coor_y:
-            print(f'[{x}, {y}] : OK')
             x, y = code_to_table(x, y)
             piece.location = [x, y]
 
@@ -473,13 +475,17 @@ def move(x, y, piece):
 def chess():
     set_table()
     print_table(table_color)
+    global turn
+
+    while (not game_end):
+        turn_start()
+        turn = not turn
 
 
 def turn_start():
     color_del()
-    print(turn)
     input_x, input_y = inputing('select your piece : ')
-    moving(input_x, input_y)
+    selecting(input_x, input_y)
 
 ###########################################################
 # Below this line is the 『main function』.
@@ -488,10 +494,3 @@ def turn_start():
 chess()
 
 # 너무 하드코딩 아닌가?
-
-what = 10
-
-while(what != 0):
-    what -= 1
-    turn_start()
-    turn = not turn
