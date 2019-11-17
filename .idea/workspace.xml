@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Chess2.py" line="386" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/Chess2.py" line="430" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d7fe982-7ec6-46b9-b9cf-c5e088be62cd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Chess2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chess2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Diary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Diary.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PatchNode.txt" beforeDir="false" afterPath="$PROJECT_DIR$/PatchNode.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/about_Chess.txt" beforeDir="false" afterPath="$PROJECT_DIR$/about_Chess.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/practice.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,20 +29,20 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Diary.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="648">
-                  <caret line="69" column="36" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+                <state relative-caret-position="48">
+                  <caret line="100" column="4" selection-start-line="100" selection-start-column="4" selection-end-line="100" selection-end-column="4" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Chess2.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="814">
-                  <caret line="418" column="35" selection-start-line="418" selection-start-column="35" selection-end-line="418" selection-end-column="35" />
+                <state relative-caret-position="349">
+                  <caret line="617" column="20" lean-forward="true" selection-start-line="617" selection-start-column="20" selection-end-line="617" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -50,8 +50,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PatchNode.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="627">
-                  <caret line="73" column="41" selection-start-line="73" selection-start-column="41" selection-end-line="73" selection-end-column="41" />
+                <state relative-caret-position="420">
+                  <caret line="118" column="6" lean-forward="true" selection-start-line="118" selection-start-column="6" selection-end-line="118" selection-end-column="6" />
                 </state>
               </provider>
             </entry>
@@ -59,8 +59,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/practice.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="72">
-                  <caret line="3" column="4" lean-forward="true" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+                <state relative-caret-position="288">
+                  <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
                 </state>
               </provider>
             </entry>
@@ -72,8 +72,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/about_Chess.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2688">
-                  <caret line="112" column="41" selection-start-line="112" selection-start-column="41" selection-end-line="112" selection-end-column="41" />
+                <state relative-caret-position="1608">
+                  <caret line="67" column="30" lean-forward="true" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -98,6 +98,12 @@
       <find>selecting</find>
       <find>moving</find>
       <find>in</find>
+      <find>Pawn</find>
+      <find>au_dis</find>
+      <find>pawn_list</find>
+      <find>enpassant_list</find>
+      <find>print</find>
+      <find>print(</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -107,15 +113,15 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/practice.py" />
         <option value="$PROJECT_DIR$/Chess.py" />
         <option value="$PROJECT_DIR$/aa.py" />
         <option value="$PROJECT_DIR$/a.py" />
         <option value="$PROJECT_DIR$/corrections.txt" />
         <option value="$PROJECT_DIR$/about_Chess.txt" />
-        <option value="$PROJECT_DIR$/Chess2.py" />
         <option value="$PROJECT_DIR$/PatchNode.txt" />
         <option value="$PROJECT_DIR$/Diary.txt" />
+        <option value="$PROJECT_DIR$/practice.py" />
+        <option value="$PROJECT_DIR$/Chess2.py" />
       </list>
     </option>
   </component>
@@ -223,6 +229,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="practice (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Chess" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/practice.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="practice" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Chess" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -247,6 +274,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Chess2" />
+        <item itemvalue="Python.practice (1)" />
         <item itemvalue="Python.a" />
         <item itemvalue="Python.practice" />
         <item itemvalue="Python.Chess" />
@@ -279,7 +307,7 @@
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="top" x="916" y="162" width="590" height="575" id="Run" maximized="true" order="0" type="WINDOWED" weight="0.43074793" />
+      <window_info anchor="top" x="577" y="174" width="590" height="575" id="Run" order="0" type="WINDOWED" weight="0.43074793" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.24983476" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -297,25 +325,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info anchor="top" x="916" y="162" width="590" height="575" id="Run" maximized="true" order="0" type="WINDOWED" weight="0.43074793" />
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24983476" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" order="0" weight="0.32885906" />
-      <window_info anchor="bottom" id="Python Console" order="1" weight="0.32885906" />
-      <window_info anchor="bottom" id="Terminal" order="2" weight="0.32885906" />
-      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="4" />
-      <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="bottom" id="Debug" order="6" weight="0.39889196" />
-      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="9" weight="0.32885906" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -338,36 +347,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/about_Chess.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2688">
-          <caret line="112" column="41" selection-start-line="112" selection-start-column="41" selection-end-line="112" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Chess2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="418" column="35" selection-start-line="418" selection-start-column="35" selection-end-line="418" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PatchNode.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="73" column="41" selection-start-line="73" selection-start-column="41" selection-end-line="73" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/practice.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="4" lean-forward="true" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+        <state relative-caret-position="1608">
+          <caret line="67" column="30" lean-forward="true" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Diary.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="69" column="36" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+        <state relative-caret-position="48">
+          <caret line="100" column="4" selection-start-line="100" selection-start-column="4" selection-end-line="100" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/practice.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PatchNode.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="118" column="6" lean-forward="true" selection-start-line="118" selection-start-column="6" selection-end-line="118" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chess2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="617" column="20" lean-forward="true" selection-start-line="617" selection-start-column="20" selection-end-line="617" selection-end-column="20" />
         </state>
       </provider>
     </entry>

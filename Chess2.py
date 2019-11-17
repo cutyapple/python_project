@@ -8,28 +8,34 @@
 # Castling, En passant, promotion, check, checkmate, touch-move, stalemate
 ##########################################################
 
+import copy
+
 class Piece:
     symbol = ''             #piece's symbol
     name = ''               #piece's unique name
     location = []           #current location (table)
-    code_lo = []             #current loocation (code - array)
     direction = [[]]          #moveable direction
     distance = 0            #moveable distance
-    au_dis = 0                #auxiliary distance
     is_dying = False         #piece's checking
     moved = True            #piece's moving check
     team = ''               #piece's team
+    species = ''            #piece's species    ex) pawn, rook
 
     def die(self):          #piece's dying
+        global game_end
+
         if self.team:
             print(f'White team\'s King dead!')
             print(f'Black team win!')
-            game_end = True
+        else:
+            print(f'Black team\'s King dead!')
+            print(f'White team win!')
+        game_end = True
         self.is_dying = True
 
 
 class King(Piece):
-    def __init__(self, x, y, name, symbol, team):
+    def __init__(self, x, y, name, symbol, team, species):
         self.distance = 1
         self.direction = [[-1, 1], [0, 1], [1, 1], [-1, 0], [1, 0], [-1, -1], [0, -1], [1, -1]]
         self.location = [x, y]          #[a, 1]
@@ -37,41 +43,44 @@ class King(Piece):
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
 
 
 class Queen(Piece):
-    def __init__(self, x, y, name, symbol, team):
+    def __init__(self, x, y, name, symbol, team, species):
         self.distance = 7
         self.direction = [[-1, 1], [0, 1], [1, 1], [-1, 0], [1, 0], [-1, -1], [0, -1], [1, -1]]
         self.location = [x, y]
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
 
 
 class Bishop(Piece):
-    def __init__(self, x, y, name, symbol, team):
+    def __init__(self, x, y, name, symbol, team, species):
         self.distance = 7
         self.direction = [[-1, 1], [0, 0], [1, 1], [0, 0], [0, 0], [-1, -1], [0, 0], [1, -1]]
         self.location = [x, y]
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
 
 
 class Knight(Piece):
-    def __init__(self, x, y, name, symbol, team):
+    def __init__(self, x, y, name, symbol, team, species):
         self.distance = 2
         self.direction = [[0, 0], [0, 1], [0, 0], [-1, 0], [1, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
-        self.au_dis = 1
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
 
 
 class Rook(Piece):
-    def __init__(self, x, y, name, symbol, team):
+    def __init__(self, x, y, name, symbol, team, species):
         self.distance = 7
         self.direction = [[0, 0], [0, 1], [0, 0], [-1, 0], [1, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
@@ -79,18 +88,20 @@ class Rook(Piece):
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
 
 
 class Pawn(Piece):
-    def __init__(self, x, y, name, symbol, team, directions):
+    def __init__(self, x, y, name, symbol, team, directions, species):
         self.distance = 1
         self.direction = directions
         self.location = [x, y]
-        self.au_dis = 1       #special moving
         self.moved = False    #first moving
         self.name = name
         self.symbol = symbol
         self.team = team
+        self.species = species
+        self.turn = 0
 
 
 game_end = False
@@ -98,41 +109,41 @@ game_end = False
 wPawnDir = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, -1], [0, 0]]
 bPawnDir = [[0, 0], [0, 1], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
 
-bRookA = Rook('a', 8, 'bRookA', '♖', True)
-bKnightA = Knight('b', 8, 'bKnightA', '♘', True)
-bBishopA = Bishop('c', 8, 'bBishopA', '♗', True)
-bQueen = Queen('e', 8, 'bQueen', '♔', True)
-bKing = King('d', 8, 'bKing', '♕', True)
-bBishopB = Bishop('f', 8, 'bBishopB', '♗', True)
-bKnightB = Knight('g', 8, 'bKnightB', '♘', True)
-bRookB = Rook('h', 8, 'bRookB', '♖', True)
+bRookA = Rook('a', 8, 'bRookA', '♖', True, 'Rook')
+bKnightA = Knight('b', 8, 'bKnightA', '♘', True, 'Knight')
+bBishopA = Bishop('c', 8, 'bBishopA', '♗', True, 'Bishop')
+bQueen = Queen('e', 8, 'bQueen', '♔', True, 'Queen')
+bKing = King('d', 8, 'bKing', '♕', True, 'King')
+bBishopB = Bishop('f', 8, 'bBishopB', '♗', True, 'Bishop')
+bKnightB = Knight('g', 8, 'bKnightB', '♘', True, 'Knight')
+bRookB = Rook('h', 8, 'bRookB', '♖', True, 'Rook')
 
-bPawnA = Pawn('a', 7, 'bPawnA', '♙', True, bPawnDir)
-bPawnB = Pawn('b', 7, 'bPawnB', '♙', True, bPawnDir)
-bPawnC = Pawn('c', 7, 'bPawnC', '♙', True, bPawnDir)
-bPawnD = Pawn('d', 7, 'bPawnD', '♙', True, bPawnDir)
-bPawnE = Pawn('e', 7, 'bPawnE', '♙', True, bPawnDir)
-bPawnF = Pawn('f', 7, 'bPawnF', '♙', True, bPawnDir)
-bPawnG = Pawn('g', 7, 'bPawnG', '♙', True, bPawnDir)
-bPawnH = Pawn('h', 7, 'bPawnH', '♙', True, bPawnDir)
+bPawnA = Pawn('a', 7, 'bPawnA', '♙', True, bPawnDir, 'Pawn')
+bPawnB = Pawn('b', 7, 'bPawnB', '♙', True, bPawnDir, 'Pawn')
+bPawnC = Pawn('c', 7, 'bPawnC', '♙', True, bPawnDir, 'Pawn')
+bPawnD = Pawn('d', 7, 'bPawnD', '♙', True, bPawnDir, 'Pawn')
+bPawnE = Pawn('e', 7, 'bPawnE', '♙', True, bPawnDir, 'Pawn')
+bPawnF = Pawn('f', 7, 'bPawnF', '♙', True, bPawnDir, 'Pawn')
+bPawnG = Pawn('g', 7, 'bPawnG', '♙', True, bPawnDir, 'Pawn')
+bPawnH = Pawn('h', 7, 'bPawnH', '♙', True, bPawnDir, 'Pawn')
 
-wPawnA = Pawn('a', 2, 'wPawnA', '♟', False, wPawnDir)
-wPawnB = Pawn('b', 2, 'wPawnB', '♟', False, wPawnDir)
-wPawnC = Pawn('c', 2, 'wPawnC', '♟', False, wPawnDir)
-wPawnD = Pawn('d', 2, 'wPawnD', '♟', False, wPawnDir)
-wPawnE = Pawn('e', 2, 'wPawnE', '♟', False, wPawnDir)
-wPawnF = Pawn('f', 2, 'wPawnF', '♟', False, wPawnDir)
-wPawnG = Pawn('g', 2, 'wPawnG', '♟', False, wPawnDir)
-wPawnH = Pawn('h', 2, 'wPawnH', '♟', False, wPawnDir)
+wPawnA = Pawn('a', 2, 'wPawnA', '♟', False, wPawnDir, 'Pawn')
+wPawnB = Pawn('b', 2, 'wPawnB', '♟', False, wPawnDir, 'Pawn')
+wPawnC = Pawn('c', 2, 'wPawnC', '♟', False, wPawnDir, 'Pawn')
+wPawnD = Pawn('d', 2, 'wPawnD', '♟', False, wPawnDir, 'Pawn')
+wPawnE = Pawn('e', 2, 'wPawnE', '♟', False, wPawnDir, 'Pawn')
+wPawnF = Pawn('f', 2, 'wPawnF', '♟', False, wPawnDir, 'Pawn')
+wPawnG = Pawn('g', 2, 'wPawnG', '♟', False, wPawnDir, 'Pawn')
+wPawnH = Pawn('h', 2, 'wPawnH', '♟', False, wPawnDir, 'Pawn')
 
-wRookA = Rook('a', 1, 'wRookA', '♜', False)
-wKnightA = Knight('b', 1, 'wKnightA', '♞', False)
-wBishopA = Bishop('c', 1, 'wBishopA', '♝', False)
-wQueen = Queen('e', 1, 'wQueen', '♚', False)
-wKing = King('d', 1, 'wKing', '♛', False)
-wBishopB = Bishop('f', 1, 'wBishopB', '♝', False)
-wKnightB = Knight('g', 1, 'wKnightB', '♞', False)
-wRookB = Rook('h', 1, 'wRookB', '♜', False)
+wRookA = Rook('a', 1, 'wRookA', '♜', False, 'Rook')
+wKnightA = Knight('b', 1, 'wKnightA', '♞', False, 'Knight')
+wBishopA = Bishop('c', 1, 'wBishopA', '♝', False, 'Bishop')
+wQueen = Queen('e', 1, 'wQueen', '♚', False, 'Queen')
+wKing = King('d', 1, 'wKing', '♛', False, 'King')
+wBishopB = Bishop('f', 1, 'wBishopB', '♝', False, 'Bishop')
+wKnightB = Knight('g', 1, 'wKnightB', '♞', False, 'Knight')
+wRookB = Rook('h', 1, 'wRookB', '♜', False, 'Rook')
 
 piece_list = [
     bRookA, bKnightA, bBishopA, bKing, bQueen, bBishopB, bKnightB, bRookB,
@@ -146,6 +157,17 @@ piece_list = [
 turn = False
 remain_b = 0
 remain_w = 0
+
+# promotion
+black_list = ['♖', '♘', '♗', '♔']
+white_list = ['♜', '♞', '♝', '♚']
+change_list = [1, 2, 3, 4]
+
+# en passent
+enpassant_list = []
+
+# check
+check_list = [[]]
 
 chess_width = ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 chess_height = ['８', '７', '６', '５', '４', '３', '２', '１', 8, 7, 6, 5, 4, 3, 2, 1]
@@ -164,6 +186,8 @@ chess_table = [
 
 table_color = [[]]
 table_color.pop(0)
+
+pawn_list = []
 
 
 def cls():
@@ -232,8 +256,10 @@ def table_color_set(table_color):
     return indexes
 
 def print_table(table_color):  # print the current table
-    cls()
+    if game_end:
+        return
 
+    cls()
     indexes = table_color_set(table_color)
 
     if turn:
@@ -244,7 +270,6 @@ def print_table(table_color):  # print the current table
     for i in range(0, 10):
         for j in range(0, 10):
                 check = True
-                check2 = True
                 for index in indexes:
                     if index == [j, i]:
                         for piece in piece_list:
@@ -252,22 +277,26 @@ def print_table(table_color):  # print the current table
                             table_y = int(table_y)
                             if piece.location == [table_x, table_y]:
                                 if piece.team != turn:
-                                    print(f'\x1b[0;0;45m{chess_table[i][j]}\x1b[0m', end='')
-                                    check2 = False
+                                    print(f'\x1b[0;{find_color(j, i)};45m{chess_table[i][j]}\x1b[0m', end='')
                                     check = False
-                        if check2:
-                            print(f'\x1b[0;0;46m{chess_table[i][j]}\x1b[0m', end='')
+                        if check:
+                            print(f'\x1b[0;{find_color(j, i)};46m{chess_table[i][j]}\x1b[0m', end='')
                             check = False
 
                 if check:
                     if i == 0 or j == 0 or i == 9 or j == 9:
                         print(f'{chess_table[i][j]}', end='')
                     elif (j+i) % 2 == 0:
-                        print(f'\x1b[0;0;40m{chess_table[i][j]}\x1b[0m', end='')
+                        print(f'\x1b[0;{find_color(j, i)};40m{chess_table[i][j]}\x1b[0m', end='')
                     else:
-                        print(f'\x1b[0;0;0m{chess_table[i][j]}\x1b[0m', end='')
+                        print(f'\x1b[0;{find_color(j, i)};0m{chess_table[i][j]}\x1b[0m', end='')
 
         print('')
+        # print(find_color(2, 2))
+
+
+def a():
+    return 32
 
 
 def inputing(word):
@@ -300,7 +329,7 @@ def selecting(x, y):
     x_index, y_index = table_to_code(x, y)
     y_index = int(y_index)
 
-    color_add(find_piece(x, y))
+    color_piece = color_add(find_piece(x, y), False)
 
     indexes = table_color_set(table_color)
 
@@ -320,12 +349,15 @@ def selecting(x, y):
     else:
         for piece in piece_list:
             if piece.location == [x, y]:
+                if color_piece.species == 'Pawn':
+                    color_piece.moved = True
                 print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
                 indexes = table_color_set(table_color)
                 while(True):
                     input_x, input_y = inputing('select the coordinates : ')
                     x, y = table_to_code(input_x, input_y)
                     y = int(y)
+
 
                     if [x, y] in indexes:
                         break
@@ -334,6 +366,17 @@ def selecting(x, y):
                 print(f'Your choice : [{input_x}, {input_y}]')
 
                 move(input_x, input_y, piece)
+                is_check(piece)
+
+
+def find_color(input_x, input_y):
+    input_x, input_y = code_to_table(input_x, input_y)
+    piece = find_piece(input_x, input_y)
+    if piece == None:
+        return 0
+    elif piece.team:
+        return 32
+    return 31
 
 
 def find_piece(input_x, input_y):
@@ -344,11 +387,12 @@ def find_piece(input_x, input_y):
 
 # table_color에 들어있는 쓰레기 값 제거
 def color_del():
+    global table_color
     for i in range(0, len(table_color)):
         table_color.pop()
 
 
-def color_add(piece):
+def color_add(piece, checking):
     color_del()
 
     if piece == None:
@@ -367,7 +411,7 @@ def color_add(piece):
                 move_y = y + i * dir_y
 
                 #Is it a Knight?
-                if 'Knight' in piece.name:
+                if 'Knight' in piece.species:
                     ys = [-1, 1, -2, 2, -2, 2, -1, 1]
                     xs = [-2, -2, -1, -1, 1, 1, 2, 2]
                     for i in range(0, 8):
@@ -385,21 +429,18 @@ def color_add(piece):
                                 if move_piece.team == turn:
                                     check = False
 
-
                             if check:
                                 if not [move_x, move_y] in table_color:
                                     table_color.append([move_x, move_y])
-                                    check = False
                     check = False
 
                 if check:
-
                     # Is there the wall?
                     if move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8:
                         break
 
                     # Is it a Pawn?
-                    if 'Pawn' in piece.name:
+                    if 'Pawn' in piece.species:
                         sub = 0
                         if not piece.team:
                             sub = -1
@@ -407,6 +448,8 @@ def color_add(piece):
                             sub = 1
 
                         for i in range(-1, 2):
+                            if move_x + i > 8:
+                                break
                             table_x, table_y = code_to_table(move_x + i, move_y + sub)
                             pawn_someone = find_piece(table_x, table_y)
 
@@ -414,7 +457,18 @@ def color_add(piece):
                                 continue
 
                             if i != 0 and pawn_someone == None:
+                                if piece.team:
+                                    pawn_x, pawn_y = piece.location
+                                    pawn_y = int(pawn_y)
+                                    if pawn_y == 4:
+                                        enpassant(piece)
+                                else:
+                                    pawn_x, pawn_y = piece.location
+                                    pawn_y = int(pawn_y)
+                                    if pawn_y == 5:
+                                        enpassant(piece)
                                 continue
+
                             elif i != 0 and pawn_someone != None:
                                 if pawn_someone.team == piece.team:
                                     continue
@@ -423,7 +477,7 @@ def color_add(piece):
 
                         if not piece.moved:
                             table_color.append([move_x, (move_y + sub * 2)])
-                            piece.moved = True
+                            pawn_list.append(piece)
                             break
 
                     # Is there something?
@@ -438,7 +492,17 @@ def color_add(piece):
 
                     if i != 0:
                         table_color.append([move_x, move_y])
+    if checking:
+        global check_list
+        check_list = copy.copy(table_color)
+        color_del()
     print_table(table_color)
+    return piece
+
+
+def copy_list(list_a):
+    for i in range(0, len(list_a)):
+        check_list[i] = list_a[i]
 
     
 def move(x, y, piece):
@@ -451,6 +515,45 @@ def move(x, y, piece):
 
     attaked_piece = find_piece(x, y)
 
+    if 'Pawn' in piece.species:
+        # en passent
+        for item in enpassant_list:
+            item_x, item_y = item
+            if piece.team:
+                sub = -1
+            else:
+                sub = 1
+
+            new_x, new_y = table_to_code(x, y)
+            if item_x == new_x and item_y == new_y:
+                chess_table[new_y+sub][new_x] = '　'
+                new_x, new_y = code_to_table(new_x, new_y+sub)
+                found_piece = find_piece(new_x, new_y)
+                found_piece.location = [-1, -1]
+                break
+                
+        # promotion
+        if y == 8 or y == 1:
+            j = 1
+            if piece.team:
+                for i in black_list:
+                    print(f'{j}.{i}', end='  ')
+                    j+=1
+            else :
+                for i in white_list:
+                    print(f'{j}.{i}', end='  ')
+                    j+=1
+            while (True):
+                change_num = input('\nchoose the change piece : ')
+                # change_num = int(change_num)
+                if change_num.isdigit():
+                    change_num = int(change_num)
+                    if change_num in change_list:
+                        promotion(change_num, piece)
+                        break
+
+                print(f'wrong select!')
+
     if attaked_piece != None:
         attaked_piece.location = [-1, -1]
         attaked_piece.is_dying = True
@@ -460,6 +563,7 @@ def move(x, y, piece):
     x, y = table_to_code(x, y)
 
     for color_coor in table_color:
+
         coor_x, coor_y = color_coor
         if x == coor_x and y == coor_y:
             x, y = code_to_table(x, y)
@@ -472,17 +576,74 @@ def move(x, y, piece):
     print_table(table_color)
 
 
+def enpassant_del():
+    for i in range(len(enpassant_list)):
+        enpassant_list.pop()
+
+
+def enpassant(piece):
+    x, y = piece.location
+    y = int(y)
+    for i in range(-1, 2):
+        if i != 0:
+            x_index = chess_width.index(x)
+            if x_index + i > 7 and x_index + i < 16:
+                found_piece = find_piece(chess_width[x_index+i], y)
+                if found_piece != None:
+                    if found_piece.species == 'Pawn' and found_piece.team != piece.team:
+                        if found_piece.turn == 1:
+                            table_color.append([x_index+i-7, 8-y])
+                            enpassant_list.append([x_index+i-7, 8-y])
+
+
+def promotion(change_index, piece):
+    check = False
+
+    for found_piece in piece_list:
+        if piece.team:
+            if found_piece.symbol == black_list[change_index-1] and found_piece.team == piece.team:
+                check = True
+        else:
+            if found_piece.symbol == white_list[change_index-1] and found_piece.team == piece.team:
+                check = True
+
+        if check:
+            piece.symbol = found_piece.symbol
+            piece.direction = found_piece.direction
+            piece.distance = found_piece.distance
+            piece.species = found_piece.species
+            break
+
+
+def is_check(piece):
+    color_add(piece, True)
+    print(f'pn : {piece.name}')
+    print(f'--------------------------------------')
+    for i in check_list:
+        print(i)
+    print(f'--------------------------------------')
+
+
 def chess():
     set_table()
     print_table(table_color)
     global turn
+    global game_end
 
     while (not game_end):
+        pawn_turn()
         turn_start()
         turn = not turn
+        # color_del()
+
+
+def pawn_turn():
+    for i in pawn_list:
+        i.turn += 1
 
 
 def turn_start():
+    enpassant_del()
     color_del()
     input_x, input_y = inputing('select your piece : ')
     selecting(input_x, input_y)
