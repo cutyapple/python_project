@@ -157,6 +157,8 @@ piece_list = [
 turn = False
 remain_b = 0
 remain_w = 0
+black = ''
+white = ''
 
 # promotion
 black_list = ['♖', '♘', '♗', '♔']
@@ -259,13 +261,16 @@ def print_table(table_color):  # print the current table
     if game_end:
         return
 
+    global black
+    global white
+
     cls()
     indexes = table_color_set(table_color)
 
     if turn:
-        print('Black team\'s turn')
+        print(f'\x1b[0;32;0m {black} team\'s turn \x1b[0m')
     else:
-        print('White team\'s turn')
+        print(f'\x1b[0;31;0m {white} team\'s turn \x1b[0m')
 
     for i in range(0, 10):
         for j in range(0, 10):
@@ -293,10 +298,6 @@ def print_table(table_color):  # print the current table
 
         print('')
         # print(find_color(2, 2))
-
-
-def a():
-    return 32
 
 
 def inputing(word):
@@ -328,6 +329,7 @@ def selecting(x, y):
     y = int(y)
     x_index, y_index = table_to_code(x, y)
     y_index = int(y_index)
+    checks = False
 
     color_piece = color_add(find_piece(x, y), False)
 
@@ -351,17 +353,22 @@ def selecting(x, y):
             if piece.location == [x, y]:
                 if color_piece.species == 'Pawn':
                     color_piece.moved = True
-                print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
-                indexes = table_color_set(table_color)
                 while(True):
+                    print_table(table_color)
+                    if checks:
+                        print('ERROR : wrong choice.')
+                        checks = False
+                    print(f'Your choice : [{x}, {y}] : {chess_table[y_index][x_index]}')
+                    indexes = table_color_set(table_color)
                     input_x, input_y = inputing('select the coordinates : ')
                     x, y = table_to_code(input_x, input_y)
                     y = int(y)
 
-
                     if [x, y] in indexes:
                         break
-                    print('ERROR : wrong choice.')
+                    else:
+                        checks = True
+
 
                 print(f'Your choice : [{input_x}, {input_y}]')
 
@@ -573,7 +580,7 @@ def move(x, y, piece):
         table_color.pop()
 
     re_table()
-    print_table(table_color)
+    # print_table(table_color)
 
 
 def enpassant_del():
@@ -617,23 +624,36 @@ def promotion(change_index, piece):
 
 def is_check(piece):
     color_add(piece, True)
-    print(f'pn : {piece.name}')
-    print(f'--------------------------------------')
+    king = ''
+    teams = ''
+    if piece.team:
+        king = '♛'
+        teams = white
+    else:
+        king = '♕'
+        teams = black
     for i in check_list:
-        print(i)
-    print(f'--------------------------------------')
+        x, y = i
+        if chess_table[y][x] == king:
+            print(f'\x1b[0;31;0m {teams} team\'s King Checked by {teams} team\'s {piece.species} {piece.location} \x1b[0m')
 
 
 def chess():
+    global game_end
+    global white
+    global black
+
+    print(f'CutyApple\'s Chess!')
+    white = input('Input the name of Team TOP : ')
+    black = input('Input the name of Team BOTTOM : ')
+
     set_table()
     print_table(table_color)
-    global turn
-    global game_end
 
     while (not game_end):
         pawn_turn()
         turn_start()
-        turn = not turn
+        print_table(table_color)
         # color_del()
 
 
@@ -643,10 +663,14 @@ def pawn_turn():
 
 
 def turn_start():
+    global turn
+
     enpassant_del()
     color_del()
     input_x, input_y = inputing('select your piece : ')
     selecting(input_x, input_y)
+    turn = not turn
+
 
 ###########################################################
 # Below this line is the 『main function』.
