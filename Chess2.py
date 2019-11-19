@@ -624,8 +624,6 @@ def promotion(change_index, piece):
 
 def is_check(piece):
     color_add(piece, True)
-    king = ''
-    teams = ''
     if piece.team:
         king = '♛'
         teams = white
@@ -644,8 +642,8 @@ def chess():
     global black
 
     print(f'CutyApple\'s Chess!')
-    white = input('Input the name of Team TOP : ')
-    black = input('Input the name of Team BOTTOM : ')
+    white = input('Input the name of Team BOTTOM : ')
+    black = input('Input the name of Team TOP : ')
 
     set_table()
     print_table(table_color)

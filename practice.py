@@ -1,13 +1,12 @@
-import copy
+a = []
 
-a = [1, [1, 2, 3]]
-b = copy.copy(a)    # shallow copy 발생
-print(b)    # [1, [1, 2, 3]] 출력
-a[0] = 100
-print(b)    # [100, [1, 2, 3]] 출력,
-print(a)    # [1, [1, 2, 3]] 출력, shallow copy 가 발생해 복사된 리스트는 별도의 객체이므로 item을 수정하면 복사본만 수정된다. (immutable 객체의 경우)
+a.append(['bPawnA', [1, 2, 3]])
+a.append(['bPawnB', [4, 5, 6]])
+a.append(['bPawnC', [7, 8, 9]])
+a.append(['bPawnD', [1, 2, 3]])
+a.append(['bPawnE', [4, 5, 6]])
+a.append(['bPawnF', [7, 8, 9]])
 
-c = copy.copy(a)
-c[1].append(4)    # 리스트의 두번째 item(내부리스트)에 4를 추가
-print(c)    # [1, [1, 2, 3, 4]] 출력
-print(a)
+for i, lists in a:
+    for j in lists:
+        print(i, j)
