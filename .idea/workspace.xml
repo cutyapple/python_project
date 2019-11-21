@@ -30,26 +30,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Diary.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="185" column="11" selection-start-line="185" selection-start-column="11" selection-end-line="185" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Chess2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="657" lean-forward="true" selection-start-line="657" selection-end-line="657" />
+            <state relative-caret-position="624">
+              <caret line="216" column="17" lean-forward="true" selection-start-line="216" selection-start-column="17" selection-end-line="216" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Chess2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="689" column="34" selection-start-line="689" selection-start-column="34" selection-end-line="689" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PatchNode.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="624">
-              <caret line="176" column="29" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
+              <caret line="188" column="10" selection-start-line="188" selection-start-column="10" selection-end-line="188" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -115,9 +115,9 @@
         <option value="$PROJECT_DIR$/corrections.txt" />
         <option value="$PROJECT_DIR$/about_Chess.txt" />
         <option value="$PROJECT_DIR$/practice.py" />
-        <option value="$PROJECT_DIR$/Chess2.py" />
-        <option value="$PROJECT_DIR$/Diary.txt" />
         <option value="$PROJECT_DIR$/PatchNode.txt" />
+        <option value="$PROJECT_DIR$/Diary.txt" />
+        <option value="$PROJECT_DIR$/Chess2.py" />
       </list>
     </option>
   </component>
@@ -303,7 +303,7 @@
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="top" x="577" y="174" width="590" height="575" id="Run" maximized="true" order="0" type="WINDOWED" weight="0.43074793" />
+      <window_info active="true" anchor="top" x="0" y="23" width="1536" height="841" id="Run" maximized="true" order="0" type="WINDOWED" visible="true" weight="0.43074793" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.24983476" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -355,24 +355,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Chess2.py">
+    <entry file="file://$PROJECT_DIR$/PatchNode.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="657" lean-forward="true" selection-start-line="657" selection-end-line="657" />
+        <state relative-caret-position="624">
+          <caret line="188" column="10" selection-start-line="188" selection-start-column="10" selection-end-line="188" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Diary.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="185" column="11" selection-start-line="185" selection-start-column="11" selection-end-line="185" selection-end-column="11" />
+        <state relative-caret-position="624">
+          <caret line="216" column="17" lean-forward="true" selection-start-line="216" selection-start-column="17" selection-end-line="216" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PatchNode.txt">
+    <entry file="file://$PROJECT_DIR$/Chess2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="176" column="29" selection-start-line="176" selection-start-column="29" selection-end-line="176" selection-end-column="29" />
+        <state relative-caret-position="159">
+          <caret line="689" column="34" selection-start-line="689" selection-start-column="34" selection-end-line="689" selection-end-column="34" />
         </state>
       </provider>
     </entry>

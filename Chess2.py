@@ -407,7 +407,6 @@ def color_add(piece, check_list_checking, att_checking):
 
     if piece == None:
         return
-    print(f'00{table_color}')
     x, y = piece.location
     x, y = table_to_code(x, y)
     x = int(x)
@@ -438,6 +437,9 @@ def color_add(piece, check_list_checking, att_checking):
                             if move_piece != None:
                                 if move_piece.team == turn:
                                     check = False
+
+                            if att_checking:
+                                check = True
 
                             if check:
                                 if not [move_x, move_y] in table_color:
@@ -643,21 +645,49 @@ def move_check():
     enemy_list = []
     global enemy_attack_all
     global colors
+    king = ''
+
+    if turn:
+        king = piece_list[3]
+    else:
+        king = piece_list[27]
+
+    king_x, king_y = king.location
+    king_x, king_y = table_to_code(king_x, king_y)
 
     for enemy in piece_list:
         i += 1
-        if (i < 16 and turn):
-            enemy_list.append(enemy)
+        if (i >= 16 and turn):
+            if not enemy.is_dying:
+                enemy_list.append(enemy)
             continue
-        elif (i >= 16 and not turn):
-            enemy_list.append(enemy)
+        if (i < 16 and not turn):
+            if not enemy.is_dying:
+                enemy_list.append(enemy)
             continue
+
     for enemy in enemy_list:
         color_add(enemy, False, True)
-        print('')
+
+    i = -1
+    for enemy in enemy_attack_all:
+        i += 1
+        print(f'{enemy_list[i].name} : {enemy}')
+        for att in enemy:
+            if att == None:
+                continue
+
+            print(f'{att} : {[king_x, king_y]}')
+            if att == [king_x, king_y]:
+                print('You can\'t move it!')
 
 
+    # enemy_attack_all init
+    for i in range(len(enemy_attack_all)):
+        enemy_attack_all.pop()
 
+
+# piece가 움직였을 때, 상대 왕을 체크 시킬 수 있나?
 def is_check(piece):
     color_add(piece, True, False)
     if piece.team:
@@ -669,7 +699,7 @@ def is_check(piece):
     for i in check_list:
         x, y = i
         if chess_table[y][x] == king:
-            print(f'\x1b[0;31;0m{teams} team\'s King Checked by {teams} team\'s{piece.species} {piece.location}\x1b[0m')
+            print(f'\x1b[0;31;0m{teams}\'s King Checked by {teams} team\'s {piece.species} {piece.location}\x1b[0m')
 
 
 def chess():
