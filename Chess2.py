@@ -9,29 +9,30 @@
 # Bottom : False | Top : True
 ##########################################################
 
-import copy
 
 class Piece:
-    symbol = ''             #piece's symbol
-    name = ''               #piece's unique name
-    location = []           #current location (table)
-    direction = [[]]          #moveable direction
-    distance = 0            #moveable distance
-    is_dying = False         #piece's checking
-    moved = True            #piece's moving check
-    team = ''               #piece's team
-    species = ''            #piece's species    ex) pawn, rook
+    symbol = ''             # piece's symbol
+    name = ''               # piece's unique name
+    location = []           # current location (table)
+    direction = [[]]          # moveable direction
+    distance = 0            # moveable distance
+    is_dying = False         # piece's checking
+    moved = True            # piece's moving check
+    team = ''               # piece's team
+    species = ''            # piece's species    ex) pawn, rook
 
-    def die(self):          #piece's dying
+    def die(self):          # piece's dying
         global game_end
 
-        if self.team:
-            print(f'White team\'s King dead!')
-            print(f'Black team win!')
-        else:
-            print(f'Black team\'s King dead!')
-            print(f'White team win!')
-        game_end = True
+        if self.species == 'King':
+            if self.team:
+                print(f'White team\'s King dead!')
+                print(f'Black team win!')
+            else:
+                print(f'Black team\'s King dead!')
+                print(f'White team win!')
+            game_end = True
+        self.location = [-1, -1]
         self.is_dying = True
 
 
@@ -39,8 +40,8 @@ class King(Piece):
     def __init__(self, x, y, name, symbol, team, species):
         self.distance = 1
         self.direction = [[-1, 1], [0, 1], [1, 1], [-1, 0], [1, 0], [-1, -1], [0, -1], [1, -1]]
-        self.location = [x, y]          #[a, 1]
-        self.moved = False  #castling
+        self.location = [x, y]          # [a, 1]
+        self.moved = False  # castling
         self.name = name
         self.symbol = symbol
         self.team = team
@@ -85,7 +86,7 @@ class Rook(Piece):
         self.distance = 7
         self.direction = [[0, 0], [0, 1], [0, 0], [-1, 0], [1, 0], [0, 0], [0, -1], [0, 0]]
         self.location = [x, y]
-        self.moved = False  #castling
+        self.moved = False  # castling
         self.name = name
         self.symbol = symbol
         self.team = team
@@ -97,7 +98,7 @@ class Pawn(Piece):
         self.distance = 1
         self.direction = directions
         self.location = [x, y]
-        self.moved = False    #first moving
+        self.moved = False    # first moving
         self.name = name
         self.symbol = symbol
         self.team = team
@@ -173,6 +174,7 @@ enpassant_list = []
 check_list = [[]]
 piece_move_list = []
 enemy_attack_all = []
+enemy_list = []
 
 chess_width = ['ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 chess_height = ['８', '７', '６', '５', '４', '３', '２', '１', 8, 7, 6, 5, 4, 3, 2, 1]
@@ -249,6 +251,7 @@ def set_table():  # before the start, setting the table
         code_x, code_y = code_list
         chess_table[code_y][code_x] = piece.symbol
 
+
 def table_color_set(color):
     x_index, y_index, indexes = [], [], []
     if color != [[]] and color != []:
@@ -260,6 +263,7 @@ def table_color_set(color):
         indexes.append([x_index[i], y_index[i]])
 
     return indexes
+
 
 def print_table(color):  # print the current table
     if game_end:
@@ -304,7 +308,7 @@ def print_table(color):  # print the current table
 
 
 def inputing(word):
-    while(True):
+    while True:
         try:
             coor = input(word)
             x, y = coor.strip().split(',')
@@ -326,15 +330,17 @@ def inputing(word):
 
 
 def selecting(x, y):
+    global colors
+
     y = int(y)
     x_index, y_index = table_to_code(x, y)
     y_index = int(y_index)
     checks = False
-    global colors
+    found_piece = find_piece(x, y)
 
-    color_piece = color_add(find_piece(x, y), False, False)
+    color_piece = color_add(found_piece, False, False, False)
 
-    move_check()
+    select_move_check(found_piece)
 
     indexes = table_color_set(colors)
 
@@ -342,7 +348,7 @@ def selecting(x, y):
         print_table(colors)
         print('There is no one')
         turn_start()
-    elif indexes == []:
+    elif indexes is []:
         print_table(colors)
         print('It can\'t move there')
         turn_start()
@@ -356,7 +362,7 @@ def selecting(x, y):
             if piece.location == [x, y]:
                 if color_piece.species == 'Pawn':
                     color_piece.moved = True
-                while(True):
+                while True:
                     print_table(colors)
                     if checks:
                         print('ERROR : wrong choice.')
@@ -372,7 +378,6 @@ def selecting(x, y):
                     else:
                         checks = True
 
-
                 print(f'Your choice : [{input_x}, {input_y}]')
 
                 move(input_x, input_y, piece)
@@ -382,7 +387,7 @@ def selecting(x, y):
 def find_color(input_x, input_y):
     input_x, input_y = code_to_table(input_x, input_y)
     piece = find_piece(input_x, input_y)
-    if piece == None:
+    if piece is None:
         return 0
     elif piece.team:
         return 32
@@ -402,11 +407,14 @@ def color_del():
         table_color.pop()
 
 
-def color_add(piece, check_list_checking, att_checking):
+def color_add(piece, check_list_checking, att_checking, get_att_range):
     color_del()
 
-    if piece == None:
+    if piece is None:
         return
+
+    print(f'{piece.name} : {att_checking}')
+
     x, y = piece.location
     x, y = table_to_code(x, y)
     x = int(x)
@@ -419,14 +427,14 @@ def color_add(piece, check_list_checking, att_checking):
                 move_x = x + i * dir_x
                 move_y = y + i * dir_y
 
-                #Is it a Knight?
+                # Is it a Knight?
                 if 'Knight' in piece.species:
                     ys = [-1, 1, -2, 2, -2, 2, -1, 1]
                     xs = [-2, -2, -1, -1, 1, 1, 2, 2]
-                    for i in range(0, 8):
+                    for j in range(0, 8):
                         check = True
-                        move_x = xs[i] + x
-                        move_y = ys[i] + y
+                        move_x = xs[j] + x
+                        move_y = ys[j] + y
 
                         if move_x < 1 or move_y < 1 or move_x > 8 or move_y > 8:
                             check = False
@@ -434,7 +442,7 @@ def color_add(piece, check_list_checking, att_checking):
                         if check:
                             move_c_x, move_c_y = code_to_table(move_x, move_y)
                             move_piece = find_piece(move_c_x, move_c_y)
-                            if move_piece != None:
+                            if move_piece is not None:
                                 if move_piece.team == turn:
                                     check = False
 
@@ -443,7 +451,10 @@ def color_add(piece, check_list_checking, att_checking):
 
                             if check:
                                 if not [move_x, move_y] in table_color:
-                                    table_color.append([move_x, move_y])
+                                    if att_checking:
+                                        table_color.append([move_x, move_y, piece])
+                                    else:
+                                        table_color.append([move_x, move_y])
                     check = False
 
                 if check:
@@ -453,22 +464,21 @@ def color_add(piece, check_list_checking, att_checking):
 
                     # Is it a Pawn?
                     if 'Pawn' in piece.species:
-                        sub = 0
                         if not piece.team:
                             sub = -1
                         else:
                             sub = 1
 
-                        for i in range(-1, 2):
-                            if move_x + i > 8:
+                        for j in range(-1, 2):
+                            if move_x + j > 8:
                                 break
-                            table_x, table_y = code_to_table(move_x + i, move_y + sub)
+                            table_x, table_y = code_to_table(move_x + j, move_y + sub)
                             pawn_someone = find_piece(table_x, table_y)
 
-                            if i == 0 and pawn_someone != None:
+                            if j == 0 and pawn_someone is not None:
                                 continue
 
-                            if i != 0 and pawn_someone == None:
+                            if j != 0 and pawn_someone is None:
                                 if piece.team:
                                     pawn_x, pawn_y = piece.location
                                     pawn_y = int(pawn_y)
@@ -481,14 +491,19 @@ def color_add(piece, check_list_checking, att_checking):
                                         enpassant(piece)
                                 continue
 
-                            elif i != 0 and pawn_someone != None:
+                            elif j != 0 and pawn_someone is not None:
                                 if pawn_someone.team == piece.team:
                                     continue
-
-                            table_color.append([move_x + i, move_y + sub])
+                            if att_checking:
+                                table_color.append([move_x + j, move_y + sub, piece])
+                            else:
+                                table_color.append([move_x + j, move_y + sub])
 
                         if not piece.moved:
-                            table_color.append([move_x, (move_y + sub * 2)])
+                            if att_checking:
+                                table_color.append([move_x, (move_y + sub * 2), piece])
+                            else:
+                                table_color.append([move_x, (move_y + sub * 2)])
                             pawn_list.append(piece)
                             break
 
@@ -499,34 +514,45 @@ def color_add(piece, check_list_checking, att_checking):
                             t_move_y = int(t_move_y)
                             if something.location == [t_move_x, t_move_y]:
                                 if something.team != piece.team:
-                                    table_color.append([move_x, move_y])
+                                    if att_checking:
+                                        table_color.append([move_x, move_y, piece])
+                                    else:
+                                        table_color.append([move_x, move_y])
                         break
 
                     if i != 0:
-                        table_color.append([move_x, move_y])
+                        if att_checking:
+                            table_color.append([move_x, move_y, piece])
+                        else:
+                            table_color.append([move_x, move_y])
+
+    if get_att_range:
+        att_list = list_copy(table_color)
+        list_del(table_color)
+        return att_list
+
     if att_checking:
         global enemy_attack_all
-        ace = copy.copy(table_color)
+        ace = list_copy(table_color)
         enemy_attack_all.append(ace)
 
     if check_list_checking:
         global check_list
-        check_list = copy.copy(table_color)
+        check_list = list_copy(table_color)
         # color_del()
-
-    # global piece_move_list
-    # piece_move_list = copy.copy(table_color)
 
     if not att_checking and not check_list_checking:
         global colors
-        colors = copy.copy(table_color)
+        colors = list_copy(table_color)
         print_table(colors)
     return piece
 
 
-def copy_list(list_a):
-    for i in range(0, len(list_a)):
-        check_list[i] = list_a[i]
+def list_copy(list_a):
+    list_b = []
+    for a in range(len(list_a)):
+        list_b.append(list_a[a])
+    return list_b
 
     
 def move(x, y, piece):
@@ -562,14 +588,13 @@ def move(x, y, piece):
             if piece.team:
                 for i in black_list:
                     print(f'{j}.{i}', end='  ')
-                    j+=1
-            else :
+                    j += 1
+            else:
                 for i in white_list:
                     print(f'{j}.{i}', end='  ')
-                    j+=1
-            while (True):
+                    j += 1
+            while True:
                 change_num = input('\nchoose the change piece : ')
-                # change_num = int(change_num)
                 if change_num.isdigit():
                     change_num = int(change_num)
                     if change_num in change_list:
@@ -578,9 +603,8 @@ def move(x, y, piece):
 
                 print(f'wrong select!')
 
-    if attaked_piece != None:
-        attaked_piece.location = [-1, -1]
-        attaked_piece.is_dying = True
+    if attaked_piece is not None:
+        attaked_piece.die()
         if 'King' in attaked_piece.name:
             attaked_piece.die()
 
@@ -598,8 +622,6 @@ def move(x, y, piece):
 
     re_table()
 
-    # print_table(table_color)
-
 
 def enpassant_del():
     for i in range(len(enpassant_list)):
@@ -612,9 +634,9 @@ def enpassant(piece):
     for i in range(-1, 2):
         if i != 0:
             x_index = chess_width.index(x)
-            if x_index + i > 7 and x_index + i < 16:
+            if 7 < x_index + i < 16:
                 found_piece = find_piece(chess_width[x_index+i], y)
-                if found_piece != None:
+                if found_piece is not None:
                     if found_piece.species == 'Pawn' and found_piece.team != piece.team:
                         if found_piece.turn == 1:
                             table_color.append([x_index+i-7, 8-y])
@@ -640,12 +662,17 @@ def promotion(change_index, piece):
             break
 
 
-def move_check():
-    i = -1
-    enemy_list = []
+def select_move_check(piece):
+    king_x, king_y = enemy_list_init()
+    can_att(piece, king_x, king_y)
+
+    list_del(enemy_attack_all)
+
+
+def enemy_list_init():
+    global enemy_list
     global enemy_attack_all
     global colors
-    king = ''
 
     if turn:
         king = piece_list[3]
@@ -655,41 +682,141 @@ def move_check():
     king_x, king_y = king.location
     king_x, king_y = table_to_code(king_x, king_y)
 
+    list_del(enemy_list)
+    enemy_list = get_enemy_list()
+    enemy_attack_all_init(enemy_list)
+
+    return king_x, king_y
+
+
+def enemy_attack_all_init(enemy_lists):
+    for enemy in enemy_lists:
+        if enemy is not None:
+            color_add(enemy, False, True, False)
+
+
+def get_enemy_list():
+    global enemy_list
+    i = -1
+
+    list_del(enemy_list)
+
     for enemy in piece_list:
         i += 1
-        if (i >= 16 and turn):
-            if not enemy.is_dying:
-                enemy_list.append(enemy)
-            continue
-        if (i < 16 and not turn):
-            if not enemy.is_dying:
-                enemy_list.append(enemy)
-            continue
-
-    for enemy in enemy_list:
-        color_add(enemy, False, True)
-
-    i = -1
-    for enemy in enemy_attack_all:
-        i += 1
-        print(f'{enemy_list[i].name} : {enemy}')
-        for att in enemy:
-            if att == None:
+        if i < 16 and not turn:
+            if enemy.is_dying:
+                # enemy_lists.append(None)
                 continue
+            else:
+                enemy_list.append(enemy)
+            continue
+        elif i >= 16 and turn:
+            if enemy.is_dying:
+                # enemy_lists.append(None)
+                continue
+            else:
+                enemy_list.append(enemy)
+            continue
 
-            print(f'{att} : {[king_x, king_y]}')
-            if att == [king_x, king_y]:
-                print('You can\'t move it!')
+    return enemy_list
 
 
-    # enemy_attack_all init
-    for i in range(len(enemy_attack_all)):
-        enemy_attack_all.pop()
+def can_att(piece, king_x, king_y):
+    checking_list = who_is_check(king_x, king_y)
+    att_range = get_att_range(piece)
+    can_range = []
+
+    for checks in checking_list:
+        for att in att_range:
+            att_x, att_y = att
+            att = code_to_table(att_x, att_y)
+            print(f'{checks.location} : {att}')
+            if checks.location == att:
+                print(f'-------wwww--------')
+                can_range.append(att)
+
+    if not can_range:
+        print(f'********** 1) This piece can\'t SELECT! ************')
+        # 여기서 끝. 체크하고 있는 말 공격 불가
+        
+    else:
+        # 이동 후를 가정해주는 함수 if_move(be_x, be_y, af_x, af_y) 필요함.
+        # chess_table[be_x, be_y]의 값을 af_x, af_y로 '공격'한 후의 상황을 가정해줌.
+        for range in can_range:
+            range_x, range_y = range
+            range_x, range_y = table_to_code(range_x, range_y)
+            if_move(piece, range_x, range_y, king_x, king_y)
+        # 위 코드는 ca
+        after_checking_list = who_is_check(king_x, king_y)
+        if after_checking_list:
+            print(f'********** 1-1) This piece can\'t SELECT! ************')
+            # 여기서 끝. 체크하고 있는 말 공격 후 체크됨.
+
+        else:
+            print(f'********** 1) It can ATTACK!************')
 
 
-# piece가 움직였을 때, 상대 왕을 체크 시킬 수 있나?
+def if_move(piece, att_x, att_y, king_x, king_y):
+
+    t_be_x, t_be_y = piece.location
+    t_att_x, t_att_y = code_to_table(att_x, att_y)
+    attack_piece = find_piece(t_att_x, t_att_y)
+
+    if attack_piece is not None:
+        # 가상 상황 설정
+        print(f'{t_be_x, t_be_y} | {t_att_x, t_att_y}')
+        piece.location = attack_piece.location
+        attack_piece.die()
+
+        print(f'fff{chess_table[att_y][att_x]}')
+        checking_list = who_is_check(king_x, king_y)
+        if checking_list is []:
+            print('움직이고 난 후, 체크가 안되네요!')
+        else:
+            print('움직이고 난 후, 체크가 되네요!')
+        print(attack_piece.is_dying)
+        print(checking_list)
+
+        # 원상복구
+        piece.location = [t_be_x, t_be_y]
+        attack_piece.is_dying = False
+        attack_piece.location = [t_att_x, t_att_y]
+
+
+def get_att_range(piece):
+    return color_add(piece, False, False, True)
+
+
+def who_is_check(king_x, king_y):
+    checking_list = []
+
+    # e_a_a checking
+    i = -1  #
+    for enemy in enemy_attack_all:  #
+        i += 1  #
+
+        for enemy_info in enemy:  #
+            if enemy_info is None:  #
+                continue  #
+
+            enemy_x, enemy_y, enemy_body = enemy_info
+            enemy_att = [enemy_x, enemy_y]
+
+            if enemy_att == [king_x, king_y]:  #
+                if enemy_body not in checking_list:
+                    checking_list.append(enemy_body)
+
+    return checking_list
+
+
+def list_del(lists):
+    for i in range(len(lists)):
+        lists.pop()
+
+
+# 적 piece가 움직였을 때, 상대 왕을 체크 시킬 수 있나?
 def is_check(piece):
-    color_add(piece, True, False)
+    color_add(piece, True, False, False)
     if piece.team:
         king = '♛'
         teams = white
@@ -715,7 +842,7 @@ def chess():
     set_table()
     print_table(colors)
 
-    while (not game_end):
+    while not game_end:
         pawn_turn()
         turn_start()
         print_table(colors)
