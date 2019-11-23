@@ -32,8 +32,10 @@ class Piece:
                 print(f'Black team\'s King dead!')
                 print(f'White team win!')
             game_end = True
+
         self.location = [-1, -1]
         self.is_dying = True
+        print(self.location)
 
 
 class King(Piece):
@@ -413,8 +415,6 @@ def color_add(piece, check_list_checking, att_checking, get_att_range):
     if piece is None:
         return
 
-    print(f'{piece.name} : {att_checking}')
-
     x, y = piece.location
     x, y = table_to_code(x, y)
     x = int(x)
@@ -692,7 +692,12 @@ def enemy_list_init():
 def enemy_attack_all_init(enemy_lists):
     for enemy in enemy_lists:
         if enemy is not None:
-            color_add(enemy, False, True, False)
+            print(f'****** {enemy.name} : {enemy.is_dying}')
+            if enemy.location != [-1, -1]:
+                print(f'aaaaaaaaaaaaaaaaaaaaaaaaaaaa{enemy.name} : {enemy.location}')
+                color_add(enemy, False, True, False)
+            else:
+                print(f'eneneneneneneennenenenenenn{enemy.name} : {enemy.location}')
 
 
 def get_enemy_list():
@@ -703,6 +708,9 @@ def get_enemy_list():
 
     for enemy in piece_list:
         i += 1
+
+        print(f'erqwr{enemy.name} : {enemy.is_dying}')
+
         if i < 16 and not turn:
             if enemy.is_dying:
                 # enemy_lists.append(None)
@@ -757,7 +765,6 @@ def can_att(piece, king_x, king_y):
 
 
 def if_move(piece, att_x, att_y, king_x, king_y):
-
     t_be_x, t_be_y = piece.location
     t_att_x, t_att_y = code_to_table(att_x, att_y)
     attack_piece = find_piece(t_att_x, t_att_y)
@@ -766,16 +773,20 @@ def if_move(piece, att_x, att_y, king_x, king_y):
         # 가상 상황 설정
         print(f'{t_be_x, t_be_y} | {t_att_x, t_att_y}')
         piece.location = attack_piece.location
+        print(piece.location)
         attack_piece.die()
 
         print(f'fff{chess_table[att_y][att_x]}')
+        print(f'apl{attack_piece.location}')
         checking_list = who_is_check(king_x, king_y)
         if checking_list is []:
             print('움직이고 난 후, 체크가 안되네요!')
         else:
             print('움직이고 난 후, 체크가 되네요!')
-        print(attack_piece.is_dying)
-        print(checking_list)
+        print(f'is{attack_piece.is_dying}')
+        print(f'fp{find_piece(t_att_x, t_att_y)}')
+        print(f'cl : {checking_list}')
+        print(f'cll : {checking_list[0].location}')
 
         # 원상복구
         piece.location = [t_be_x, t_be_y]
@@ -788,10 +799,19 @@ def get_att_range(piece):
 
 
 def who_is_check(king_x, king_y):
+    global enemy_list
+    global enemy_attack_all
     checking_list = []
+
+    enemy_attack_all_init(get_enemy_list())
+
+    # print(f'asdfasdfsdf{get_enemy_list()}')
 
     # e_a_a checking
     i = -1  #
+
+    # print(enemy_attack_all)
+
     for enemy in enemy_attack_all:  #
         i += 1  #
 
