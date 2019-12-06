@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DMI</title>
     <link rel="stylesheet" href="../css/club_select.css">
+    <link rel="stylesheet" href="../css/modal.css">
 </head>
 <body>
     <div class="whole_wrapper">
@@ -21,25 +22,25 @@
 
         <nav>
             <a href="file:///C:/Users/user/Desktop/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/DDaMamIn/html/main.html">메인 페이지</a>
-            <a href="file:///C:/Users/user/Desktop/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/DDaMamIn/html/self_learning_select.html">자율학습</a>
             <a href="file:///C:/Users/user/Desktop/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/DDaMamIn/html/club_select.html" class="nav_now">동아리</a>
+            <a href="file:///C:/Users/user/Desktop/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/DDaMamIn/html/self_learning_select.html">자율학습</a>
         </nav>
-
+        
         <section>
             <div class="forms">
-                <a href="#">1학년</a>
-                <a href="#">2학년</a>
-                <a href="#">3학년</a>
-                <a href="#">자율학습</a>
+                <button class="forms_modal">4층</button>
+                <button class="forms_modal">3층</button>
+                <button class="forms_modal">2층</button>
             </div>
-        </section>
+        </section>  
 
         <div id="myModal" class="modal">
             <div class="modal-content">
-            <span class="close">&times;</span>                                                               
+            <span class="modal_close">&times;</span>                                                               
             <p>Some text in the Modal..</p>
             </div>
         </div>
     </div> 
 </body>
+<script src="../js/modal.js"></script>
 </html>

@@ -1,19 +1,21 @@
-var modal = document.getElementById('myModal');
+var btns = document.querySelectorAll(".forms_modal");
 
-var btn = document.getElementById("myBtn");
+var modal = document.querySelector("#myModal")
+ 
+var span = document.querySelector(".modal_close");                                          
 
-var span = document.getElementsByClassName("close")[0];                                          
-
-btn.onclick = function() {
-    modal.style.display = "block";
+for(var i=0; i<btns.length; i++){
+    btns[i].addEventListener("click", function(){
+        modal.style.display = "block";   
+    })
 }
 
-span.onclick = function() {
+span.addEventListener("click", function(){
     modal.style.display = "none";
-}
+})
 
-window.onclick = function(event) {
-    if (event.target == modal) {
+window.onclick = function(event){
+    if (event.target == modal){
         modal.style.display = "none";
     }
 }
